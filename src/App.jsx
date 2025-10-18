@@ -89,7 +89,7 @@ export default function App() {
           <section className="message-card">
             <div className="left">
               <div className="photo-placeholder">
-                <img src="/annora1.jpg" alt="Annora" className="photo" />
+                <img src="/annora2.jpg" alt="Annora" className="photo" />
               </div>
             </div>
             <div className="right">
