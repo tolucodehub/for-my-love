@@ -1,125 +1,94 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
+import "./styles.css";
 
-const HER_NAME = "Annora";
-const SIGN_NAME = "Toluwase";
-
+// Heartfelt messages
 const MESSAGES = [
-  "Every day with you feels like a dream I never want to wake up from.",
-  "You’ve become my peace, my laughter, and my favorite place.",
-  "Even on my worst days, your love makes everything better.",
-  "If I could describe love in one word, it would simply be you.",
-  "You’re not just part of my story — you’re the best chapter.",
-  "My heart found its rhythm when it found you.",
-  "No poem or song could ever explain how deeply I love you.",
-  "Every beat of my heart whispers your name.",
-  "You’re my forever person, and I thank God for you every day.",
-  "If loving you is a journey, I never want to reach the destination."
+  "Annora, you light up my world every day ❤️",
+  "Your smile is my favorite view 🥹",
+  "I love you more than words can express 💖",
+  "Every moment with you is magical ✨",
+  "You complete me in every way ❤️",
+  "With you, life feels like a beautiful dream 🌸",
+  "Your love gives me strength 💪💞",
+  "You’re my forever and always 🥰",
+  "I cherish every laugh, every hug, every kiss 💓",
+  "Thank you for being you, my love 💖"
 ];
 
-function HeartParticles() {
-  // Simple decorative hearts using CSS animated elements
-  const hearts = Array.from({length: 12});
-  return (
-    <div className="hearts">
-      {hearts.map((_, i) => <div key={i} className={"heart heart-"+(i%6)} />)}
-    </div>
-  )
-}
-
-function Typewriter({text, speed=40}) {
-  const [display, setDisplay] = useState("");
-  useEffect(()=> {
-    let i = 0;
-    setDisplay("");
-    const t = setInterval(()=> {
-      setDisplay(prev => prev + text[i]);
-      i++;
-      if (i >= text.length) clearInterval(t);
-    }, speed);
-    return ()=> clearInterval(t);
-  }, [text, speed]);
-  return <span className="typewriter">{display}</span>
-}
-
 export default function App() {
-  const [loading, setLoading] = useState(true);
-  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    // Background music (optional)
+    const audio = new Audio("/romantic.mp3");
+    audio.loop = true;
+    audio.volume = 0.2;
+    audio.play().catch(e => console.log("Audio play blocked by browser:", e));
 
-  useEffect(()=> {
-    const timer = setTimeout(()=> setLoading(false), 2600);
-    return ()=> clearTimeout(timer)
-  }, [])
+    // Gentle floating heart particles
+    const canvas = document.createElement("canvas");
+    canvas.id = "heartCanvas";
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+    let hearts = [];
 
-  useEffect(()=> {
-    const autoplay = setInterval(()=> {
-      setIndex(i => (i+1) % MESSAGES.length);
-    }, 5000);
-    return ()=> clearInterval(autoplay);
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function createHeart() {
+      hearts.push({
+        x: Math.random() * canvas.width,
+        y: canvas.height + 20,
+        size: 10 + Math.random() * 15,
+        speed: 0.5 + Math.random() * 1.5,
+        opacity: 0.3 + Math.random() * 0.4
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hearts.forEach((heart, index) => {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 105, 180, ${heart.opacity})`; // soft pink
+        ctx.arc(heart.x, heart.y, heart.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+        heart.y -= heart.speed;
+        if (heart.y + heart.size < 0) hearts.splice(index, 1);
+      });
+      requestAnimationFrame(draw);
+    }
+
+    setInterval(createHeart, 500); // gentle new heart every 0.5s
+    draw();
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      document.body.removeChild(canvas);
+    };
   }, []);
 
   return (
-    <div className="page">
-      <div className="bg-gradient" />
-      <HeartParticles />
+    <div className="app">
+      <header className="header">
+        <h1>For Annora 🥰❤️</h1>
+        <h3>With love, Toluwase</h3>
+      </header>
 
-      {loading ? (
-        <section className="center-card intro">
-          <div className="loader-heart" />
-          <h1>Something beautiful is loading…</h1>
-          <p className="muted">I made this just for you, {HER_NAME}.</p>
-        </section>
-      ) : (
-        <main className="center-card content">
-          <header className="header">
-            <h2 className="small">For My Love</h2>
-            <h1>Annora 🥹❤️</h1>
-            <p className="muted">A little place to tell you how much you mean to me.</p>
-          </header>
+      <section className="photo-placeholder">
+        <img src="/annora2.jpg" alt="Annora" className="photo" />
+      </section>
 
-          <section className="message-card">
-            <div className="left">
-              <div className="photo-placeholder">
-                <img src="/annora1.jpg" alt="Annora" className="photo" />
-              </div>
-            </div>
-            <div className="right">
-              <h3>Dear <span className="accent">{HER_NAME}</span>,</h3>
-              <p className="main-para">
-                <Typewriter text={`I love you more than words can say. You are my sunrise, my comfort, the smile that starts my day.`} />
-              </p>
-              <p className="main-para">
-                I wanted to build something small and sweet so you can always revisit these little reminders. Below are some lines I wrote (and picked) — read them whenever you need to feel loved.
-              </p>
-            </div>
-          </section>
+      <section className="messages">
+        {MESSAGES.map((msg, idx) => (
+          <p key={idx} className="message">{msg}</p>
+        ))}
+      </section>
 
-          <section className="carousel">
-            <button className="nav" onClick={()=> setIndex(i => (i-1 + MESSAGES.length) % MESSAGES.length)}>&lt;</button>
-            <article className="card">
-              <p className="quote">“{MESSAGES[index]}”</p>
-              <p className="from muted">— From me</p>
-            </article>
-            <button className="nav" onClick={()=> setIndex(i => (i+1) % MESSAGES.length)}>&gt;</button>
-          </section>
-
-          <section className="photo-gallery">
-            <h4>Moments with you ❤️</h4>
-            <div className="gallery-grid">
-              <img src="/annora1.jpg" alt="Annora 1" />
-              <img src="/annora2.jpg" alt="Annora 2" />
-              <img src="/annora3.jpg" alt="Annora 3" />
-            </div>
-          </section>
-
-          <footer className="footer">
-            <p>Forever yours,</p>
-            <p className="signature">{SIGN_NAME} ❤️</p>
-            <button className="restart" onClick={()=> { setLoading(true); setTimeout(()=> setLoading(false), 800) }}>View Intro Again</button>
-          </footer>
-
-        </main>
-      )}
-      <aside className="floating-credit">Made with love — Toluwase</aside>
+      <footer className="footer">
+        <p>💞 Made with love for Annora by Toluwase 💞</p>
+      </footer>
     </div>
-  )
+  );
 }
