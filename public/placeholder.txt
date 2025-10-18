@@ -1,0 +1,1 @@
+Add your images into /public and reference them in src/App.jsx placeholders.
