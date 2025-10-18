@@ -75,6 +75,31 @@ html,body,#root{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui
 .card{flex:1;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));min-height:90px;display:flex;flex-direction:column;justify-content:center}
 .quote{font-size:18px;line-height:1.4}
 .from{margin-top:8px;text-align:right}
+.photo-gallery {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.gallery-grid img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-grid img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 100, 140, 0.4);
+}
 
 /* footer */
 .footer{display:flex;align-items:center;justify-content:space-between;margin-top:18px;gap:12px}

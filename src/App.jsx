@@ -102,6 +102,15 @@ export default function App() {
             <button className="nav" onClick={()=> setIndex(i => (i+1) % MESSAGES.length)}>&gt;</button>
           </section>
 
+          <section className="photo-gallery">
+            <h4>Moments with you ❤️</h4>
+            <div className="gallery-grid">
+              <img src="/annora1.jpg" alt="Annora 1" />
+              <img src="/annora2.jpg" alt="Annora 2" />
+              <img src="/annora3.jpg" alt="Annora 3" />
+            </div>
+          </section>
+
           <footer className="footer">
             <p>Forever yours,</p>
             <p className="signature">{SIGN_NAME} ❤️</p>
